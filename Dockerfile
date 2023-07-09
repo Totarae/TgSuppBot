@@ -1,5 +1,8 @@
 FROM python:3.7
 
+# Install Vim
+RUN apt-get update && apt-get install -y vim
+
 RUN mkdir -p /app
 WORKDIR /app
 
