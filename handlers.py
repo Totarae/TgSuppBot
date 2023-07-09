@@ -27,8 +27,21 @@ def forward_to_chat(update, context):
         'text': 'TEST QOO', 'entities': [], 'caption_entities': [], 'photo': [], 'new_chat_members': [], 'new_chat_photo': [], 'delete_chat_photo': False, 'group_chat_created': False, 'supergroup_chat_created': False, 'channel_chat_created': False, 
         'from': {'id': 49820636, 'first_name': 'Daniil', 'is_bot': False, 'last_name': 'Okhlopkov', 'username': 'danokhlopkov', 'language_code': 'en'}
     }"""
+    # logging.info('New incoming message: ')
+    user_id = update.message.from_user.id
+
+    # logging.info(f'From user : {user_id}')
+
+    blacklist_ids = []
+    with open(r'./ids.txt', 'r+') as in_file:
+        for row in in_file:
+            blacklist_ids.append(int(row.strip()))
+
+    # if user_id in blacklist_ids:
+    # logging.info(f'Bandit found! : {user_id} ')
+
     forwarded = update.message.forward(chat_id=TELEGRAM_SUPPORT_CHAT_ID)
-    if not forwarded.forward_from:
+    if (not forwarded.forward_from) and (user_id not in blacklist_ids):
         context.bot.send_message(
             chat_id=TELEGRAM_SUPPORT_CHAT_ID,
             reply_to_message_id=forwarded.message_id,
@@ -53,7 +66,7 @@ def forward_to_user(update, context):
         'group_chat_created': False, 'supergroup_chat_created': False, 'channel_chat_created': False, 
         'from': {'id': 49820636, 'first_name': 'Daniil', 'is_bot': False, 'last_name': 'Okhlopkov', 'username': 'danokhlopkov', 'language_code': 'en'}
     }"""
-    ##logging.INFO('Into forward user')
+    logging.info('Into forward user')
     user_id = None
     if update.message.reply_to_message.forward_from:
         user_id = update.message.reply_to_message.forward_from.id

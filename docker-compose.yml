@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  tlg_support_bot:
+    image: tlg_support_bot:latest
+#    networks:
+#      - host
+    volumes:
+      - ./.env:/app/.env
+
+#networks:
+#  host:
+#    external:
+#      name: host
